@@ -30,18 +30,11 @@ defmodule NasaProgram do
     fuel - rocket_mass
   end
 
-  defp launch(mass, gravity, acc \\ 0)
+  defp launch(mass, gravity), do: do_launch(gravity, [launching_fuel_amount(mass, gravity)])
+  defp do_launch(_, [mass | masses]) when mass <= 0, do: Enum.sum(masses)
 
-  defp launch(mass, gravity, acc) do
-    fuel = launching_fuel_amount(mass, gravity)
-
-    # if amount of fuel required to lift the mass is greater
-    # than 0, then we have to bring more fuel with us.
-    if fuel > 0 do
-      launch(fuel, gravity, acc + fuel)
-    else
-      acc
-    end
+  defp do_launch(gravity, [mass | _] = acc) do
+    do_launch(gravity, [launching_fuel_amount(mass, gravity) | acc])
   end
 
   # it's perhaps a better idea to use a decimal in the fuel calculations,
@@ -49,16 +42,11 @@ defmodule NasaProgram do
   # But I didn't
   defp launching_fuel_amount(mass, gravity), do: (mass * gravity * 0.042 - 33) |> trunc()
 
-  defp land(mass, gravity, acc \\ 0)
+  defp land(mass, gravity), do: do_land(gravity, [landing_fuel_amount(mass, gravity)])
+  defp do_land(_, [mass | masses]) when mass <= 0, do: Enum.sum(masses)
 
-  defp land(mass, gravity, acc) do
-    fuel = landing_fuel_amount(mass, gravity)
-
-    if fuel > 0 do
-      land(fuel, gravity, acc + fuel)
-    else
-      acc
-    end
+  defp do_land(gravity, [mass | _] = acc) do
+    do_land(gravity, [landing_fuel_amount(mass, gravity) | acc])
   end
 
   defp landing_fuel_amount(mass, gravity), do: (mass * gravity * 0.033 - 42) |> trunc()
