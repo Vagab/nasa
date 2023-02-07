@@ -7,7 +7,9 @@ defmodule NasaProgram do
   @doc """
   Calculates the amount of fuel for the mission.
   Accepts the mass of the ship not including fuel as the first argument, and
-  a list of launches and landings as the second argument
+  a list of tuples, where the first element is either :launch or :land, and
+  the second element is the gravity of the planet from/on which we intend to
+  launch/land as the second argument.g
   """
   @spec fuel_amount(pos_integer(), list({:launch, float()} | {:land, float()})) :: pos_integer()
   def fuel_amount(rocket_mass, stops) do
