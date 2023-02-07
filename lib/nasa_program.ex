@@ -16,7 +16,7 @@ defmodule NasaProgram do
       # we have to think from the end here, dynamic programming & all that.
       # Intuitive way to understand this is as follows:
       # if we calculate it without reversing the order
-      # then we calculate the amount of fuel for the second step,
+      # then when we calculate the amount of fuel for the second step,
       # we'd have to adjust the amount of fuel in the first step.
       # Calculating from the end does not have such weakness.
       |> Enum.reverse()
@@ -33,8 +33,8 @@ defmodule NasaProgram do
   defp launch(mass, gravity, acc) do
     fuel = launching_fuel_amount(mass, gravity)
 
-    # if amount of fuel required to lift the mass if greater
-    # than 0, then we have to bring more fuel with us!
+    # if amount of fuel required to lift the mass is greater
+    # than 0, then we have to bring more fuel with us.
     if fuel > 0 do
       launch(fuel, gravity, acc + fuel)
     else
@@ -42,8 +42,9 @@ defmodule NasaProgram do
     end
   end
 
-  # it's perhaps a better idea to use a decimal in fuel calculations, since we are dealing
-  # with a very high precision requirements. But I didn't
+  # it's perhaps a better idea to use a decimal in the fuel calculations,
+  # since we are dealing with a very high precision requirements.
+  # But I didn't
   defp launching_fuel_amount(mass, gravity), do: (mass * gravity * 0.042 - 33) |> trunc()
 
   defp land(mass, gravity, acc \\ 0)
